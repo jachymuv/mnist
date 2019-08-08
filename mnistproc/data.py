@@ -11,10 +11,8 @@ class MnistData:
         else:
             (self.X_train, self.y_train), (self.X_test, self.y_test) = mnist.load_data()
 
-        print(y_train[:20])
-
         # shuffle data order
-        self.shuffle_train()
+        # self.shuffle_train()
 
         if limit:
             self._limit_train(limit)

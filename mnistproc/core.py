@@ -11,6 +11,8 @@ import tensorflow.keras.backend as K
 from tensorflow.python.framework.versions import VERSION as TFVERSION
 from tensorflow.keras.models import load_model
 from tensorflow import set_random_seed
+from tensorflow.logging import set_verbosity
+from tensorflow.logging import ERROR as TFERROR
 
 from .data import MnistData
 
@@ -38,6 +40,8 @@ class MnistProc:
 
         if self.verbose:
             print("MnistProc with TF version", TFVERSION, file=sys.stderr)
+        else:
+            set_verbosity(TFERROR)
 
         self.data = MnistData(path=path, limit=limit)
         self.model = Sequential()
@@ -49,7 +53,7 @@ class MnistProc:
         self.batch_size = batch_size
 
         if seed:
-            self.set_seed(seed)
+            self.set_random_seeds(seed)
 
     def compile_model(self, name="cnn9975"):
 
@@ -108,7 +112,7 @@ class MnistProc:
                 self.data.y_train_cat,
                 batch_size=self.batch_size,
                 epochs=self.max_epochs,
-                verbose=1,
+                verbose=self.verbose,
                 validation_split=val_split,
                 callbacks=self.callbacks,
             )
@@ -119,10 +123,10 @@ class MnistProc:
         else:
             print("ERROR: Model not compiled and cannot be trained", file=sys.stderr)
 
-    def get_accuracy(self):
+    def get_error_rate(self):
 
         if self.fitted:
-            return self.model.evaluate(self.data.X_test, self.data.y_test_cat)[1]
+            return 1.0 - self.model.evaluate(self.data.X_test, self.data.y_test_cat, verbose=self.verbose)[1]
         else:
             print("ERROR: Model not fitted and cannot be evaluated", file=sys.stderr)
             return None
@@ -137,7 +141,7 @@ class MnistProc:
 
         self.compile_model()
         self.train_model()
-        return self.get_accuracy()
+        return self.get_error_rate()
 
     def set_random_seeds(self, seed):
 
