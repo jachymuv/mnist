@@ -2,23 +2,36 @@ import sys
 import random
 
 import numpy as np
-#import tensorflow as tf
+
+# import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, MaxPool2D, Flatten, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping, LearningRateScheduler
 import tensorflow.keras.backend as K
 from tensorflow.python.framework.versions import VERSION as TFVERSION
 from tensorflow.keras.models import load_model
+from tensorflow import set_random_seed
 
 from .data import MnistData
 
-#print(tf.version)
+# print(tf.version)
+
 
 class MnistProc:
+    def __init__(
+        self,
+        *,
+        path=None,
+        limit=None,
+        early_stopping=True,
+        lr_scheduler=False,
+        verbose=False,
+        save_model=None,
+        max_epochs=50,
+        batch_size=128,
+        seed=None,
+    ):
 
-    def __init__(self, *, path=None, limit=None, early_stopping=True, lr_scheduler=False,
-     verbose=False, save_model=None, max_epochs=50, batch_size=128):
-        
         self.verbose = verbose
         self.early_stopping = early_stopping
         self.lr_scheduler = lr_scheduler
@@ -35,6 +48,9 @@ class MnistProc:
         self.max_epochs = max_epochs
         self.batch_size = batch_size
 
+        if seed:
+            self.set_seed(seed)
+
     def compile_model(self, name="cnn9975"):
 
         self._add_callbacks()
@@ -47,30 +63,27 @@ class MnistProc:
 
     def _compile_cnn9975_model(self):
 
-        self.model.add(Conv2D(32, kernel_size = 3, activation='relu', input_shape = (28, 28, 1)))
+        self.model.add(Conv2D(32, (3, 3), activation="relu", input_shape=(28, 28, 1)))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(32, kernel_size = 3, activation='relu', ))
+        self.model.add(Conv2D(32, (3, 3), activation="relu"))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(32, kernel_size = 5, strides=2, padding='same', activation='relu',
-                ))
-        self.model.add(BatchNormalization())
-        self.model.add(Dropout(0.4))
-
-        self.model.add(Conv2D(64, kernel_size = 3, activation='relu', 
-                ))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(64, kernel_size = 3, activation='relu', ) )
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(64, kernel_size = 5, strides=2, padding='same', activation='relu', ))
+        self.model.add(Conv2D(32, (5, 5), strides=2, padding="same", activation="relu"))
         self.model.add(BatchNormalization())
         self.model.add(Dropout(0.4))
 
-        self.model.add(Conv2D(128, kernel_size = 4, activation='relu', ))
+        self.model.add(Conv2D(64, (3, 3), activation="relu"))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv2D(64, (3, 3), activation="relu"))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv2D(64, (5, 5), strides=2, padding="same", activation="relu"))
+        self.model.add(BatchNormalization())
+        self.model.add(Dropout(0.4))
+
+        self.model.add(Conv2D(128, (4, 4), activation="relu"))
         self.model.add(BatchNormalization())
         self.model.add(Flatten())
         self.model.add(Dropout(0.4))
-        self.model.add(Dense(10, activation='softmax', ))
-
+        self.model.add(Dense(10, activation="softmax"))
 
         # COMPILE WITH ADAM OPTIMIZER AND CROSS ENTROPY COST
         self.model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
@@ -80,18 +93,25 @@ class MnistProc:
     def _add_callbacks(self):
 
         if self.early_stopping:
-            es = EarlyStopping(monitor='val_acc', patience=5)
+            es = EarlyStopping(monitor="val_acc", patience=5)
             self.callbacks.append(es)
-        
+
         if self.lr_scheduler:
-            lrs = LearningRateScheduler(lambda x: 1e-3 * 0.95 ** x)
+            lrs = LearningRateScheduler(lambda x: 0.001 * 0.95 ** x)
             self.callbacks.append(lrs)
 
     def train_model(self, val_split=0.2):
 
         if self.compiled:
-            self.history=self.model.fit(self.data.X_train, self.data.y_train_cat, batch_size=self.batch_size,
-            epochs=self.max_epochs, verbose=1, validation_split=val_split, callbacks=self.callbacks)
+            self.history = self.model.fit(
+                self.data.X_train,
+                self.data.y_train_cat,
+                batch_size=self.batch_size,
+                epochs=self.max_epochs,
+                verbose=1,
+                validation_split=val_split,
+                callbacks=self.callbacks,
+            )
             self.fitted = True
 
             if self.save_model:
@@ -119,8 +139,8 @@ class MnistProc:
         self.train_model()
         return self.get_accuracy()
 
+    def set_random_seeds(self, seed):
 
-
-    
-
-
+        np.random.seed(seed)
+        random.seed(seed)
+        set_random_seed(seed)
