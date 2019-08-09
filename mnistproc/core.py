@@ -131,7 +131,7 @@ class MnistProc:
         """
 
         if self.early_stopping:
-            es = EarlyStopping(monitor="val_loss", patience=5)
+            es = EarlyStopping(monitor="val_acc", patience=5)
             self.callbacks.append(es)
 
         if self.lr_scheduler:

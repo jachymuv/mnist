@@ -66,6 +66,10 @@ if __name__ == "__main__":
         "-e", "--max_epochs", action="store", type=int, default=50, help="""max number of epochs"""
     )
 
+    arg_parser.add_argument(
+        "-x", "--early_stopping", action="store_true", help="turn on early stopping with patience"
+    )
+
     arg_parser.add_argument("-d", "--seed", action="store", type=int, help="""set random seed""")
 
     arg_parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
@@ -96,6 +100,7 @@ if __name__ == "__main__":
             verbose=verbosity,
             save_model=params.save_model,
             max_epochs=params.max_epochs,
+            early_stopping=params.early_stopping,
             seed=params.seed,
         )
         error_rate = mp.do_all()
@@ -106,6 +111,7 @@ if __name__ == "__main__":
             verbose=verbosity,
             save_model=params.save_model,
             max_epochs=params.max_epochs,
+            early_stopping=params.early_stopping,
             seed=params.seed,
         )
         error_rate = mp.do_all()

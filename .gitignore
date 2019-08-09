@@ -1,5 +1,4 @@
 mnistproc/__pycache__
-*.h5
 .vscode
 black.sh
 small.sh
