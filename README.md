@@ -1,6 +1,6 @@
 # MNIST Handwritten Digit Recognition 
 
-This repository contains code to train and test an ML model for the MNIST handwritten digit recognition task. The model implemented is a lightweighted version of the Kaggle-leading model [CNN9975](https://www.kaggle.com/cdeotte/25-million-images-0-99757-mnist). The CNN9975 model build upon the idea of the well-known LeCun et al. paper _"Gradient-Based Learning Applied to Document Recognition"_ from 1998, applying several methods that prove to improve the performance of CNN-based systems. The authors report 99.75% accuracy which is very close to the currently best reported result of 99.80%. As this program is only an exercise not meant to run on a powerful hawrdware, it uses only a subset of these improvements, namely:
+This repository contains code to train and test an ML model for the MNIST handwritten digit recognition task. The model implemented is a lightweighted version of the Kaggle-leading model [CNN9975](https://www.kaggle.com/cdeotte/25-million-images-0-99757-mnist). The _CNN9975_ model build upon the idea of the well-known LeCun et al. paper _"Gradient-Based Learning Applied to Document Recognition"_ from 1998, applying several methods that prove to improve the performance of CNN-based systems. The authors report 99.75% accuracy which is very close to the currently best reported result of 99.80%. As this program is only an exercise not meant to run on a powerful hawrdware, it uses only a subset of these improvements, namely:
 
 * nonlinear convolution layers 
 * learnable pooling layers
@@ -18,7 +18,7 @@ Early stopping and decaying learning rate are implemented as optional features. 
 * main.py - the main scripts providing a command line interface for MnistProc
 * requirements.txt - requirements file when using a GPU
 * requirements-cpu.txt - requirements file when using a GPU
-* README.MD - this file
+* README.md - this file
 
 ## Install
 
@@ -65,7 +65,7 @@ So the main point is there are prepared three run scenarios in _main.py_:
 * _small_ - training on smaller data (size can be specified), test on all the test set
 * _test_ - load and test a pretrained model
 
-Other parameters, like maximum number of epochs, early stopping, training size data limit 
+Other parameters, like maximum number of epochs, early stopping, training size data limit can be specified from the command line.
 
 ### Example Calls
 
@@ -79,7 +79,7 @@ Other parameters, like maximum number of epochs, early stopping, training size d
 
  `./main.py small -v -n 300 -e 2`
  
- _run in verbose, limit training data to 300 samples and train only for two epochs, then test the model (i.e. sanity check)_
+ _run in the verbose mode, limit training data to 300 samples, and train only for two epochs; then test the model (i.e. this call is good for a quick code verification)_
 
 **test** :
 
