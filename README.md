@@ -9,7 +9,7 @@ This repository contains code to train and test an ML model for the MNIST handwr
 * batch normalization
 * adam optimization
 
-Early stopping and decaying learning rate are implemented as optional features. Other advanced techniques used in CNN9975, data augmentation and ensembling/bagging, were for the moment left out but can be added in the future. The implementation is based on TensorFlow/Keras and was tested with TensorFlow versions 1.14.0 and 2.0.0 Alpha0 using Python 3.7. The accuracy of the implemented model is in the range of 99.35--99.55%, depending on the random factors during training. 
+Early stopping and decaying learning rate are implemented as optional features. Other advanced techniques used in _CNN9975_, data augmentation and ensembling/bagging, were for the moment left out but can be added in the future. The implementation is based on TensorFlow/Keras and was tested with TensorFlow versions 1.14.0 and 2.0.0 alpha0 using Python 3.7. The accuracy of the implemented model is in the range of 99.35 - 99.55%, depending on the random factors during training. 
 
 ## Repository Content:
 
@@ -17,7 +17,7 @@ Early stopping and decaying learning rate are implemented as optional features. 
 * models/ - examples of trained models 
 * main.py - the main scripts providing a command line interface for MnistProc
 * requirements.txt - requirements file when using a GPU
-* requirements-cpu.txt - requirements file when using a GPU
+* requirements-cpu.txt - requirements file when using only a CPU
 * README.md - this file
 
 ## Install
@@ -26,11 +26,13 @@ It is recommended to create a virtual environment to run the program.
 
 _Example_:
 
-<pre>
+
 `python3 -m venv env`
+
 `source env/bin/activate` (on Windows `env\Scripts\activate`)
+
 `pip install -r requirements.txt` (or `requirements-cpu.txt` for CPU version) 
-</pre>
+
 
 ## Usage
 
